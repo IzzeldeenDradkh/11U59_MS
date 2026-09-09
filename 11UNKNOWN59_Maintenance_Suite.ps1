@@ -9,22 +9,23 @@ if (-not $IsAdmin) {
 $Host.UI.RawUI.BackgroundColor = "Black"
 Clear-Host
 
-# Force Window Size (Works on both Old Console & New Windows Terminal)
+# Force Smaller Window Size
 try {
     $Width = 62
     $Height = 12
-    # Old Console Host Resize
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
-# New Windows Terminal VT Escape Resize
 Write-Host "$([char]27)[8;12;62t"
+
+# Set Smaller Text Font Size via VT Escape Sequence
+Write-Host "$([char]27)[10;4;2t" -NoNewline
 
 function Invoke-UniversalClean {
     Clear-Host
-    Write-Host "===================================================" -ForegroundColor Gray
-    Write-Host "    Universal Dynamic Cache Discovery & Purge      " -ForegroundColor Cyan
-    Write-Host "===================================================`n" -ForegroundColor Gray
+    Write-Host "===================================================" -ForegroundColor DarkGray
+    Write-Host "    Universal Dynamic Cache Discovery & Purge      " -ForegroundColor DarkGray
+    Write-Host "===================================================`n" -ForegroundColor DarkGray
 
     $KnownTargets = @(
         "$env:TEMP", "$env:SystemRoot\Temp", "$env:SystemRoot\Prefetch",
@@ -38,7 +39,7 @@ function Invoke-UniversalClean {
         "$env:LocalAppData\NVIDIA\DXCache", "$env:LocalAppData\AMD\DxCache", "$env:LocalAppData\D3DSCache"
     )
 
-    Write-Host "[1/3] Scanning system for known and unknown app caches..." -ForegroundColor White
+    Write-Host "[1/3] Scanning system for known and unknown app caches..." -ForegroundColor Gray
     $DiscoveredPaths = [System.Collections.Generic.List[string]]::new()
 
     foreach ($Target in $KnownTargets) {
@@ -59,7 +60,7 @@ function Invoke-UniversalClean {
 
     Write-Host "    [+] Discovered $($DiscoveredPaths.Count) total cache locations.`n" -ForegroundColor Green
 
-    Write-Host "[2/3] Executing High-Speed Purge with Live Timer..." -ForegroundColor White
+    Write-Host "[2/3] Executing High-Speed Purge with Live Timer..." -ForegroundColor Gray
     $PurgeBlock = [scriptblock]::Create("
         param(`$Targets)
         foreach (`$Path in `$Targets) { Remove-Item -Path `"`$Path\*`" -Recurse -Force -ErrorAction SilentlyContinue }
@@ -71,7 +72,7 @@ function Invoke-UniversalClean {
     while ($Job.State -eq "Running") {
         $Elapsed = $StageSw.Elapsed
         $TimeString = "{0:D2}:{1:D2}:{2:D2}" -f $Elapsed.Hours, $Elapsed.Minutes, $Elapsed.Seconds
-        Write-Host "`r   -> Purging... Active Time: $TimeString" -NoNewline -ForegroundColor Gray
+        Write-Host "`r   -> Purging... Active Time: $TimeString" -NoNewline -ForegroundColor DarkGray
         Start-Sleep -Seconds 1
     }
 
@@ -80,7 +81,7 @@ function Invoke-UniversalClean {
     Write-Host "`r   [+] Deep Purge Completed in: $FinalElapsed                    " -ForegroundColor Green
     Remove-Job $Job
 
-    Write-Host "`n[3/3] Flushing DNS Cache..." -ForegroundColor White
+    Write-Host "`n[3/3] Flushing DNS Cache..." -ForegroundColor Gray
     Clear-DnsClientCache
     Write-Host "    [+] DNS Cache Cleared.`n" -ForegroundColor Green
     Pause
@@ -89,13 +90,13 @@ function Invoke-UniversalClean {
 # Interactive Menu Loop
 do {
     Clear-Host
-    Write-Host "===================================================" -ForegroundColor Gray
-    Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor Cyan
-    Write-Host "===================================================" -ForegroundColor Gray
-    Write-Host " [1] Run Universal Search & Clean (Dynamic Deep Clean)" -ForegroundColor White
-    Write-Host " [2] Flush Network & DNS Cache Only" -ForegroundColor White
+    Write-Host "===================================================" -ForegroundColor DarkGray
+    Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor DarkGray
+    Write-Host "===================================================" -ForegroundColor DarkGray
+    Write-Host " [1] Run Universal Search & Clean (Dynamic Deep Clean)" -ForegroundColor Gray
+    Write-Host " [2] Flush Network & DNS Cache Only" -ForegroundColor Gray
     Write-Host " [Q] Quit" -ForegroundColor DarkRed
-    Write-Host "===================================================" -ForegroundColor Gray
+    Write-Host "===================================================" -ForegroundColor DarkGray
     
     $Selection = Read-Host "Select an option"
 
