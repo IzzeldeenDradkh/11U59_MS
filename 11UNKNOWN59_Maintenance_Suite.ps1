@@ -12,14 +12,11 @@ Clear-Host
 # Force Window Size
 try {
     $Width = 62
-    $Height = 12
+    $Height = 14
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
-Write-Host "$([char]27)[8;12;62t"
-
-# Attempt Font Scaling via VT Escape
-Write-Host "$([char]27)[10;3;2t" -NoNewline
+Write-Host "$([char]27)[8;14;62t"
 
 function Invoke-UniversalClean {
     Clear-Host
@@ -58,7 +55,7 @@ function Invoke-UniversalClean {
         }
     }
 
-    Write-Host "    [+] Discovered $($DiscoveredPaths.Count) total cache locations.`n" -ForegroundColor Gray
+    Write-Host "    [+] Discovered $($DiscoveredPaths.Count) total cache locations.`n" -ForegroundColor Green
 
     Write-Host "[2/3] Executing High-Speed Purge with Live Timer..." -ForegroundColor Gray
     $PurgeBlock = [scriptblock]::Create("
@@ -78,12 +75,55 @@ function Invoke-UniversalClean {
 
     $StageSw.Stop()
     $FinalElapsed = "{0:D2}:{1:D2}:{2:D2}" -f $StageSw.Elapsed.Hours, $StageSw.Elapsed.Minutes, $StageSw.Elapsed.Seconds
-    Write-Host "`r   [+] Deep Purge Completed in: $FinalElapsed                    " -ForegroundColor Gray
+    Write-Host "`r   [+] Deep Purge Completed in: $FinalElapsed                    " -ForegroundColor Green
     Remove-Job $Job
 
     Write-Host "`n[3/3] Flushing DNS Cache..." -ForegroundColor Gray
     Clear-DnsClientCache
-    Write-Host "    [+] DNS Cache Cleared.`n" -ForegroundColor Gray
+    Write-Host "    [+] DNS Cache Cleared.`n" -ForegroundColor Green
+    Pause
+}
+
+function Invoke-PerformanceOptimization {
+    Clear-Host
+    Write-Host "===================================================" -ForegroundColor Gray
+    Write-Host "       Windows Performance Optimization            " -ForegroundColor Gray
+    Write-Host "===================================================`n" -ForegroundColor Gray
+
+    $Stages = @(
+        @{ Name = "[1/5] Flushing DNS & Resetting Network"; Script = { ipconfig /flushdns | Out-Null; netsh winsock reset | Out-Null } },
+        @{ Name = "[2/5] Repairing System Files (DISM & SFC)"; Script = { DISM.exe /Online /Cleanup-Image /RestoreHealth /LimitAccess | Out-Null; sfc /scannow | Out-Null } },
+        @{ Name = "[3/5] Cleaning Component Store (WinSxS)"; Script = { DISM.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase | Out-Null } },
+        @{ Name = "[4/5] Optimizing Storage Drives"; Script = { defrag /C /O | Out-Null } },
+        @{ Name = "[5/5] Rebuilding Search Index Cache"; Script = { Stop-Service "Windows Search" -Force -ErrorAction SilentlyContinue; Remove-Item "$env:ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb" -Force -ErrorAction SilentlyContinue; Start-Service "Windows Search" -ErrorAction SilentlyContinue } }
+    )
+
+    $TotalSw = [System.Diagnostics.Stopwatch]::StartNew()
+
+    foreach ($Stage in $Stages) {
+        Write-Host "$($Stage.Name)..." -ForegroundColor Gray
+        
+        $Job = Start-Job -ScriptBlock $Stage.Script
+        $StageSw = [System.Diagnostics.Stopwatch]::StartNew()
+
+        while ($Job.State -eq "Running") {
+            $Elapsed = $StageSw.Elapsed
+            $TimeString = "{0:D2}:{1:D2}:{2:D2}" -f $Elapsed.Hours, $Elapsed.Minutes, $Elapsed.Seconds
+            Write-Host "`r    -> Running time: $TimeString" -NoNewline -ForegroundColor Gray
+            Start-Sleep -Seconds 1
+        }
+
+        $StageSw.Stop()
+        $FinalElapsed = "{0:D2}:{1:D2}:{2:D2}" -f $StageSw.Elapsed.Hours, $StageSw.Elapsed.Minutes, $StageSw.Elapsed.Seconds
+        Write-Host "`r    [+] Finished in: $FinalElapsed                    " -ForegroundColor Green
+        Remove-Job $Job
+        Write-Host ""
+    }
+
+    $TotalSw.Stop()
+    $TotalElapsed = "{0:D2}:{1:D2}:{2:D2}" -f $TotalSw.Elapsed.Hours, $TotalSw.Elapsed.Minutes, $TotalSw.Elapsed.Seconds
+    Write-Host "---------------------------------------------------" -ForegroundColor Gray
+    Write-Host "Done! Total Optimization Time: $TotalElapsed" -ForegroundColor Gray
     Pause
 }
 
@@ -94,7 +134,8 @@ do {
     Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor Gray
     Write-Host "===================================================" -ForegroundColor Gray
     Write-Host " [1] Run Universal Search & Clean (Dynamic Deep Clean)" -ForegroundColor Gray
-    Write-Host " [2] Flush Network & DNS Cache Only" -ForegroundColor Gray
+    Write-Host " [2] Run Windows Performance Optimization" -ForegroundColor Gray
+    Write-Host " [3] Flush Network & DNS Cache Only" -ForegroundColor Gray
     Write-Host " [Q] Quit" -ForegroundColor DarkRed
     Write-Host "===================================================" -ForegroundColor Gray
     
@@ -102,7 +143,8 @@ do {
 
     switch ($Selection.ToUpper()) {
         "1" { Invoke-UniversalClean }
-        "2" { Clear-DnsClientCache; Write-Host "DNS Cleared!" -ForegroundColor Gray; Start-Sleep -Seconds 2 }
+        "2" { Invoke-PerformanceOptimization }
+        "3" { Clear-DnsClientCache; Write-Host "DNS Cleared!" -ForegroundColor Gray; Start-Sleep -Seconds 2 }
         "Q" { Write-Host "Exiting..."; Exit }
     }
 } while ($true)
