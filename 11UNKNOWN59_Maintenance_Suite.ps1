@@ -12,11 +12,11 @@ Clear-Host
 # Force Window Size
 try {
     $Width = 62
-    $Height = 18
+    $Height = 25
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
-Write-Host "$([char]27)[8;18;62t"
+Write-Host "$([char]27)[8;25;62t"
 
 function Invoke-UniversalClean {
     Clear-Host
@@ -131,11 +131,12 @@ function Invoke-PerformanceOptimization {
     Write-Host ""
 }
 
-# Interactive Menu Loop (Public Version)
+# Interactive Menu Loop
 do {
     Clear-Host
     Write-Host "===================================================" -ForegroundColor Gray
-    Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor Gray
+    Write-Host "             =====| 11UNKNOWN59 |====              " -ForegroundColor Gray
+    Write-Host "             SYSTEM MAINTENANCE SUITE              " -ForegroundColor Gray
     Write-Host "===================================================`n" -ForegroundColor Gray
     Write-Host " [1] QuantumClean Deep-Purge" -ForegroundColor Gray
     Write-Host "     (Universal Dynamic Cache Discovery & Purge)" -ForegroundColor DarkGray
