@@ -12,11 +12,11 @@ Clear-Host
 # Force Window Size
 try {
     $Width = 62
-    $Height = 17
+    $Height = 15
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
-Write-Host "$([char]27)[8;17;62t"
+Write-Host "$([char]27)[8;15;62t"
 
 function Invoke-UniversalClean {
     Clear-Host
@@ -127,18 +127,6 @@ function Invoke-PerformanceOptimization {
     Pause
 }
 
-function Invoke-ExternalTool1 {
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"irm https://get.activated.win | iex; Pause`""
-    Write-Host "Microsoft Office & Windows Activator launched in a new window." -ForegroundColor Gray
-    Start-Sleep -Seconds 2
-}
-
-function Invoke-ExternalTool2 {
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"iex(irm is.gd/idm_reset); Pause`""
-    Write-Host "Internet Download Manager Activator launched in a new window." -ForegroundColor Gray
-    Start-Sleep -Seconds 2
-}
-
 # Interactive Menu Loop
 do {
     Clear-Host
@@ -151,8 +139,6 @@ do {
     Write-Host "     (Windows Performance Optimization)" -ForegroundColor DarkGray
     Write-Host " [3] AetherFlush Network-Reset" -ForegroundColor Gray
     Write-Host "     (Flush Network & DNS Cache Only)" -ForegroundColor DarkGray
-    Write-Host " [4] Run External Tool 1 (MAS Activation)" -ForegroundColor Gray
-    Write-Host " [5] Run External Tool 2 (is.gd)" -ForegroundColor Gray
     Write-Host " [Q] Quit" -ForegroundColor DarkRed
     Write-Host "===================================================" -ForegroundColor Gray
     
@@ -162,8 +148,6 @@ do {
         "1" { Invoke-UniversalClean }
         "2" { Invoke-PerformanceOptimization }
         "3" { Clear-DnsClientCache; Write-Host "AetherFlush: DNS Cache Cleared!" -ForegroundColor Gray; Start-Sleep -Seconds 2 }
-        "4" { Invoke-ExternalTool1 }
-        "5" { Invoke-ExternalTool2 }
         "Q" { Write-Host "Exiting..."; Exit }
     }
 } while ($true)
