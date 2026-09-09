@@ -9,7 +9,7 @@ if (-not $IsAdmin) {
 $Host.UI.RawUI.BackgroundColor = "Black"
 Clear-Host
 
-# Force Smaller Window Size
+# Force Window Size
 try {
     $Width = 62
     $Height = 12
@@ -17,9 +17,6 @@ try {
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
 Write-Host "$([char]27)[8;12;62t"
-
-# Set Smaller Text Font Size via VT Escape Sequence
-Write-Host "$([char]27)[10;4;2t" -NoNewline
 
 function Invoke-UniversalClean {
     Clear-Host
