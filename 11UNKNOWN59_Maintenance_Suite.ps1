@@ -12,16 +12,16 @@ Clear-Host
 # Force Window Size
 try {
     $Width = 62
-    $Height = 14
+    $Height = 17
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
-Write-Host "$([char]27)[8;14;62t"
+Write-Host "$([char]27)[8;17;62t"
 
 function Invoke-UniversalClean {
     Clear-Host
     Write-Host "===================================================" -ForegroundColor Gray
-    Write-Host "    Universal Dynamic Cache Discovery & Purge      " -ForegroundColor Gray
+    Write-Host "    QuantumClean Deep-Purge                        " -ForegroundColor Gray
     Write-Host "===================================================`n" -ForegroundColor Gray
 
     $KnownTargets = @(
@@ -87,7 +87,7 @@ function Invoke-UniversalClean {
 function Invoke-PerformanceOptimization {
     Clear-Host
     Write-Host "===================================================" -ForegroundColor Gray
-    Write-Host "       Windows Performance Optimization            " -ForegroundColor Gray
+    Write-Host "       NexusPrime Core-Optimizer                   " -ForegroundColor Gray
     Write-Host "===================================================`n" -ForegroundColor Gray
 
     $Stages = @(
@@ -127,15 +127,32 @@ function Invoke-PerformanceOptimization {
     Pause
 }
 
+function Invoke-ExternalTool1 {
+    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"irm https://get.activated.win | iex; Pause`""
+    Write-Host "Microsoft Office & Windows Activator launched in a new window." -ForegroundColor Gray
+    Start-Sleep -Seconds 2
+}
+
+function Invoke-ExternalTool2 {
+    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"iex(irm is.gd/idm_reset); Pause`""
+    Write-Host "Internet Download Manager Activator launched in a new window." -ForegroundColor Gray
+    Start-Sleep -Seconds 2
+}
+
 # Interactive Menu Loop
 do {
     Clear-Host
     Write-Host "===================================================" -ForegroundColor Gray
     Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor Gray
-    Write-Host "===================================================" -ForegroundColor Gray
-    Write-Host " [1] Run Universal Search & Clean (Dynamic Deep Clean)" -ForegroundColor Gray
-    Write-Host " [2] Run Windows Performance Optimization" -ForegroundColor Gray
-    Write-Host " [3] Flush Network & DNS Cache Only" -ForegroundColor Gray
+    Write-Host "===================================================`n" -ForegroundColor Gray
+    Write-Host " [1] QuantumClean Deep-Purge" -ForegroundColor Gray
+    Write-Host "     (Universal Dynamic Cache Discovery & Purge)" -ForegroundColor DarkGray
+    Write-Host " [2] NexusPrime Core-Optimizer" -ForegroundColor Gray
+    Write-Host "     (Windows Performance Optimization)" -ForegroundColor DarkGray
+    Write-Host " [3] AetherFlush Network-Reset" -ForegroundColor Gray
+    Write-Host "     (Flush Network & DNS Cache Only)" -ForegroundColor DarkGray
+    Write-Host " [4] Run External Tool 1 (MAS Activation)" -ForegroundColor Gray
+    Write-Host " [5] Run External Tool 2 (is.gd)" -ForegroundColor Gray
     Write-Host " [Q] Quit" -ForegroundColor DarkRed
     Write-Host "===================================================" -ForegroundColor Gray
     
@@ -144,7 +161,9 @@ do {
     switch ($Selection.ToUpper()) {
         "1" { Invoke-UniversalClean }
         "2" { Invoke-PerformanceOptimization }
-        "3" { Clear-DnsClientCache; Write-Host "DNS Cleared!" -ForegroundColor Gray; Start-Sleep -Seconds 2 }
+        "3" { Clear-DnsClientCache; Write-Host "AetherFlush: DNS Cache Cleared!" -ForegroundColor Gray; Start-Sleep -Seconds 2 }
+        "4" { Invoke-ExternalTool1 }
+        "5" { Invoke-ExternalTool2 }
         "Q" { Write-Host "Exiting..."; Exit }
     }
 } while ($true)
