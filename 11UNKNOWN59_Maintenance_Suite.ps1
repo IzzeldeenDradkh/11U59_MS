@@ -146,8 +146,8 @@ do {
     Write-Host "===================================================" -ForegroundColor Gray
     Write-Host "Choose a menu option using your keyboard [1,2,3...] : " -NoNewline
 
-    $Key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    $Selection = [string]$Key.Character
+    $Key = [System.Console]::ReadKey($true)
+    $Selection = [string]$Key.KeyChar
     Write-Host $Selection
     Start-Sleep -Milliseconds 300
 
