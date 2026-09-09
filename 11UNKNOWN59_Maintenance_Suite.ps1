@@ -158,7 +158,13 @@ do {
     switch ($Selection.ToUpper()) {
         "1" { Invoke-UniversalClean }
         "2" { Invoke-PerformanceOptimization }
-        "3" { Clear-DnsClientCache; Write-Host "AetherFlush: DNS Cache Cleared!" -ForegroundColor Gray; Start-Sleep -Seconds 2 }
-        "Q" { Write-Host "Exiting..."; Exit }
+        "3" { 
+            Clear-DnsClientCache
+            Write-Host "`nAetherFlush: DNS Cache Cleared!" -ForegroundColor Gray
+            Write-Host "Press any key to get back to the menu... " -NoNewline
+            [void][System.Console]::ReadKey($true)
+            Write-Host ""
+        }
+        "Q" { Write-Host "`nExiting..."; Exit }
     }
 } while ($true)
