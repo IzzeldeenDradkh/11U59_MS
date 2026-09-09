@@ -12,11 +12,11 @@ Clear-Host
 # Force Window Size
 try {
     $Width = 62
-    $Height = 25
+    $Height = 31
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
-Write-Host "$([char]27)[8;25;62t"
+Write-Host "$([char]27)[8;31;62t"
 
 function Invoke-UniversalClean {
     Clear-Host
@@ -81,9 +81,7 @@ function Invoke-UniversalClean {
     Write-Host "`n[3/3] Flushing DNS Cache..." -ForegroundColor Gray
     Clear-DnsClientCache
     Write-Host "    [+] DNS Cache Cleared.`n" -ForegroundColor Green
-    Write-Host "Press any key to get back to the menu... " -NoNewline
-    [void][System.Console]::ReadKey($true)
-    Write-Host ""
+    Start-Sleep -Seconds 3
 }
 
 function Invoke-PerformanceOptimization {
@@ -126,9 +124,7 @@ function Invoke-PerformanceOptimization {
     $TotalElapsed = "{0:D2}:{1:D2}:{2:D2}" -f $TotalSw.Elapsed.Hours, $TotalSw.Elapsed.Minutes, $TotalSw.Elapsed.Seconds
     Write-Host "---------------------------------------------------" -ForegroundColor Gray
     Write-Host "Done! Total Optimization Time: $TotalElapsed" -ForegroundColor Gray
-    Write-Host "Press any key to get back to the menu... " -NoNewline
-    [void][System.Console]::ReadKey($true)
-    Write-Host ""
+    Start-Sleep -Seconds 3
 }
 
 # Interactive Menu Loop
@@ -161,11 +157,10 @@ do {
         "2" { Invoke-PerformanceOptimization }
         "3" { 
             Clear-DnsClientCache
-            Write-Host "`nAetherFlush: DNS Cache Cleared!" -ForegroundColor Gray
-            Write-Host "Press any key to get back to the menu... " -NoNewline
-            [void][System.Console]::ReadKey($true)
-            Write-Host ""
+            Write-Host "`nAetherFlush: DNS Cache Cleared!" -ForegroundColor Green
+            Start-Sleep -Seconds 3
         }
+
         "Q" { Write-Host "`nExiting..."; Exit }
     }
 } while ($true)
