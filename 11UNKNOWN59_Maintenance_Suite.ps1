@@ -18,11 +18,14 @@ try {
 } catch {}
 Write-Host "$([char]27)[8;12;62t"
 
+# Attempt Font Scaling via VT Escape
+Write-Host "$([char]27)[10;3;2t" -NoNewline
+
 function Invoke-UniversalClean {
     Clear-Host
-    Write-Host "===================================================" -ForegroundColor DarkGray
-    Write-Host "    Universal Dynamic Cache Discovery & Purge      " -ForegroundColor DarkGray
-    Write-Host "===================================================`n" -ForegroundColor DarkGray
+    Write-Host "===================================================" -ForegroundColor Gray
+    Write-Host "    Universal Dynamic Cache Discovery & Purge      " -ForegroundColor Gray
+    Write-Host "===================================================`n" -ForegroundColor Gray
 
     $KnownTargets = @(
         "$env:TEMP", "$env:SystemRoot\Temp", "$env:SystemRoot\Prefetch",
@@ -55,7 +58,7 @@ function Invoke-UniversalClean {
         }
     }
 
-    Write-Host "    [+] Discovered $($DiscoveredPaths.Count) total cache locations.`n" -ForegroundColor Green
+    Write-Host "    [+] Discovered $($DiscoveredPaths.Count) total cache locations.`n" -ForegroundColor Gray
 
     Write-Host "[2/3] Executing High-Speed Purge with Live Timer..." -ForegroundColor Gray
     $PurgeBlock = [scriptblock]::Create("
@@ -69,37 +72,37 @@ function Invoke-UniversalClean {
     while ($Job.State -eq "Running") {
         $Elapsed = $StageSw.Elapsed
         $TimeString = "{0:D2}:{1:D2}:{2:D2}" -f $Elapsed.Hours, $Elapsed.Minutes, $Elapsed.Seconds
-        Write-Host "`r   -> Purging... Active Time: $TimeString" -NoNewline -ForegroundColor DarkGray
+        Write-Host "`r   -> Purging... Active Time: $TimeString" -NoNewline -ForegroundColor Gray
         Start-Sleep -Seconds 1
     }
 
     $StageSw.Stop()
     $FinalElapsed = "{0:D2}:{1:D2}:{2:D2}" -f $StageSw.Elapsed.Hours, $StageSw.Elapsed.Minutes, $StageSw.Elapsed.Seconds
-    Write-Host "`r   [+] Deep Purge Completed in: $FinalElapsed                    " -ForegroundColor Green
+    Write-Host "`r   [+] Deep Purge Completed in: $FinalElapsed                    " -ForegroundColor Gray
     Remove-Job $Job
 
     Write-Host "`n[3/3] Flushing DNS Cache..." -ForegroundColor Gray
     Clear-DnsClientCache
-    Write-Host "    [+] DNS Cache Cleared.`n" -ForegroundColor Green
+    Write-Host "    [+] DNS Cache Cleared.`n" -ForegroundColor Gray
     Pause
 }
 
 # Interactive Menu Loop
 do {
     Clear-Host
-    Write-Host "===================================================" -ForegroundColor DarkGray
-    Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor DarkGray
-    Write-Host "===================================================" -ForegroundColor DarkGray
+    Write-Host "===================================================" -ForegroundColor Gray
+    Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor Gray
+    Write-Host "===================================================" -ForegroundColor Gray
     Write-Host " [1] Run Universal Search & Clean (Dynamic Deep Clean)" -ForegroundColor Gray
     Write-Host " [2] Flush Network & DNS Cache Only" -ForegroundColor Gray
     Write-Host " [Q] Quit" -ForegroundColor DarkRed
-    Write-Host "===================================================" -ForegroundColor DarkGray
+    Write-Host "===================================================" -ForegroundColor Gray
     
     $Selection = Read-Host "Select an option"
 
     switch ($Selection.ToUpper()) {
         "1" { Invoke-UniversalClean }
-        "2" { Clear-DnsClientCache; Write-Host "DNS Cleared!" -ForegroundColor Green; Start-Sleep -Seconds 2 }
+        "2" { Clear-DnsClientCache; Write-Host "DNS Cleared!" -ForegroundColor Gray; Start-Sleep -Seconds 2 }
         "Q" { Write-Host "Exiting..."; Exit }
     }
 } while ($true)
