@@ -5,6 +5,18 @@ if (-not $IsAdmin) {
     Exit
 }
 
+# Set Background to Black
+$Host.UI.RawUI.BackgroundColor = "Black"
+Clear-Host
+
+# Resize Window to Small Size
+try {
+    $Width = 60
+    $Height = 15
+    $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
+    $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
+} catch {}
+
 function Invoke-UniversalClean {
     Clear-Host
     Write-Host "===================================================" -ForegroundColor Cyan
