@@ -12,11 +12,11 @@ Clear-Host
 # Force Window Size
 try {
     $Width = 62
-    $Height = 15
+    $Height = 18
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
-Write-Host "$([char]27)[8;15;62t"
+Write-Host "$([char]27)[8;18;62t"
 
 function Invoke-UniversalClean {
     Clear-Host
@@ -127,7 +127,7 @@ function Invoke-PerformanceOptimization {
     Pause
 }
 
-# Interactive Menu Loop
+# Interactive Menu Loop (Public Version)
 do {
     Clear-Host
     Write-Host "===================================================" -ForegroundColor Gray
@@ -135,14 +135,21 @@ do {
     Write-Host "===================================================`n" -ForegroundColor Gray
     Write-Host " [1] QuantumClean Deep-Purge" -ForegroundColor Gray
     Write-Host "     (Universal Dynamic Cache Discovery & Purge)" -ForegroundColor DarkGray
+    Write-Host ""
     Write-Host " [2] NexusPrime Core-Optimizer" -ForegroundColor Gray
     Write-Host "     (Windows Performance Optimization)" -ForegroundColor DarkGray
+    Write-Host ""
     Write-Host " [3] AetherFlush Network-Reset" -ForegroundColor Gray
     Write-Host "     (Flush Network & DNS Cache Only)" -ForegroundColor DarkGray
+    Write-Host ""
     Write-Host " [Q] Quit" -ForegroundColor DarkRed
     Write-Host "===================================================" -ForegroundColor Gray
-    
-    $Selection = Read-Host "Select an option"
+    Write-Host "Choose a menu option using your keyboard [1,2,3...] : " -NoNewline
+
+    $Key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    $Selection = [string]$Key.Character
+    Write-Host $Selection
+    Start-Sleep -Milliseconds 300
 
     switch ($Selection.ToUpper()) {
         "1" { Invoke-UniversalClean }
