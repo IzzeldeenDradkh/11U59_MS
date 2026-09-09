@@ -75,7 +75,7 @@ function Invoke-UniversalClean {
 do {
     Clear-Host
     Write-Host "===================================================" -ForegroundColor Cyan
-    Write-Host "         AZZAD SYSTEM MAINTENANCE SUITE            " -ForegroundColor Cyan
+    Write-Host "       11UNKNOWN59 SYSTEM MAINTENANCE SUITE        " -ForegroundColor Cyan
     Write-Host "===================================================" -ForegroundColor Cyan
     Write-Host " [1] Run Universal Search & Clean (Dynamic Deep Clean)" -ForegroundColor Yellow
     Write-Host " [2] Flush Network & DNS Cache Only" -ForegroundColor Yellow
