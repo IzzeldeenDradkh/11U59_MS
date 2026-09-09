@@ -9,13 +9,16 @@ if (-not $IsAdmin) {
 $Host.UI.RawUI.BackgroundColor = "Black"
 Clear-Host
 
-# Resize Window to Fit Menu + Extra Buffer Width
+# Force Window Size (Works on both Old Console & New Windows Terminal)
 try {
     $Width = 62
     $Height = 12
+    # Old Console Host Resize
     $Host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size($Width, 9999)
     $Host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size($Width, $Height)
 } catch {}
+# New Windows Terminal VT Escape Resize
+Write-Host "$([char]27)[8;12;62t"
 
 function Invoke-UniversalClean {
     Clear-Host
