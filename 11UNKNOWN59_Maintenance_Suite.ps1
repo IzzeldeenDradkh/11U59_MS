@@ -81,7 +81,7 @@ function Invoke-UniversalClean {
     Write-Host "`n[3/3] Flushing DNS Cache..." -ForegroundColor Gray
     Clear-DnsClientCache
     Write-Host "    [+] DNS Cache Cleared.`n" -ForegroundColor Green
-    Write-Host "Press any key to continue..." -NoNewline
+    Write-Host "Press any key to get back to the menu... " -NoNewline
     [void][System.Console]::ReadKey($true)
     Write-Host ""
 }
@@ -126,7 +126,7 @@ function Invoke-PerformanceOptimization {
     $TotalElapsed = "{0:D2}:{1:D2}:{2:D2}" -f $TotalSw.Elapsed.Hours, $TotalSw.Elapsed.Minutes, $TotalSw.Elapsed.Seconds
     Write-Host "---------------------------------------------------" -ForegroundColor Gray
     Write-Host "Done! Total Optimization Time: $TotalElapsed" -ForegroundColor Gray
-    Write-Host "Press any key to continue..." -NoNewline
+    Write-Host "Press any key to get back to the menu... " -NoNewline
     [void][System.Console]::ReadKey($true)
     Write-Host ""
 }
