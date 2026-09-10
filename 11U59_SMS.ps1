@@ -127,6 +127,41 @@ function Invoke-PerformanceOptimization {
     Start-Sleep -Seconds 3
 }
 
+# Diagnostic Reports Functions
+function Invoke-PowerReport {
+    Clear-Host
+    Write-Host "===================================================" -ForegroundColor Gray
+    Write-Host "       AetherPulse Power & Battery Report          " -ForegroundColor Gray
+    Write-Host "===================================================`n" -ForegroundColor Gray
+    Write-Host "Analyzing power efficiency and hardware states (60s)..." -ForegroundColor Gray
+    
+    powercfg /energy | Out-Null
+    
+    if (Test-Path "energy-report.html") {
+        Write-Host "`n[+] Report Generated Successfully!" -ForegroundColor Green
+        Write-Host "    Opening energy-report.html in default browser..." -ForegroundColor DarkGray
+        Start-Process "energy-report.html"
+    } else {
+        Write-Host "`n[!] Failed to locate generated energy report." -ForegroundColor DarkRed
+    }
+    Start-Sleep -Seconds 3
+}
+
+function Invoke-SystemReport {
+    Clear-Host
+    Write-Host "===================================================" -ForegroundColor Gray
+    Write-Host "       NexusDiag Full System Health Report         " -ForegroundColor Gray
+    Write-Host "===================================================`n" -ForegroundColor Gray
+    Write-Host "Initiating System Diagnostics trace (60s)..." -ForegroundColor Gray
+    Write-Host "Report dashboard will open automatically upon completion.`n" -ForegroundColor DarkGray
+    
+    perfmon /report
+    
+    Write-Host "[+] Diagnostic collection triggered!" -ForegroundColor Green
+    Start-Sleep -Seconds 3
+}
+
+
 # Interactive Menu Loop
 do {
     Clear-Host
@@ -142,6 +177,18 @@ do {
     Write-Host ""
     Write-Host " [3] AetherFlush Network-Reset" -ForegroundColor Gray
     Write-Host "     (Flush Network & DNS Cache Only)" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host " [4] AetherPulse Power Report" -ForegroundColor Gray
+    Write-Host "     (60s Power & Battery Efficiency Diagnosis)" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host " [5] NexusDiag System Health Report" -ForegroundColor Gray
+    Write-Host "     (Full Hardware & System Diagnostics Trace)" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host " [6] Microsoft Windows & Office Activator" -ForegroundColor Gray
+    Write-Host "     (Activate Your Windows & Office Apps)" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host " [7] Internet Download Manager Activator" -ForegroundColor Gray
+    Write-Host "     (Activate or Freeze Tutorial your IDM)" -ForegroundColor DarkGray
     Write-Host ""
     Write-Host " [Q] Quit" -ForegroundColor DarkRed
     Write-Host "===================================================" -ForegroundColor Gray
@@ -160,6 +207,8 @@ do {
             Write-Host "`nAetherFlush: DNS Cache Cleared!" -ForegroundColor Green
             Start-Sleep -Seconds 3
         }
+        "4" { Invoke-PowerReport }
+        "5" { Invoke-SystemReport }
 
         "Q" { Write-Host "`nExiting..."; Exit }
     }
